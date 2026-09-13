@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mecky Alvin Tanuwidjaya — Portfolio</title>
+<style>
+  :root{
+    --bg:#12151C;
+    --panel:#191D27;
+    --panel-2:#1F2430;
+    --line:#2B3140;
+    --text:#E7E9EF;
+    --muted:#8D94A6;
+    --amber:#E8A33D;
+    --teal:#4FD1C5;
+    --mono: 'JetBrains Mono','SF Mono',Consolas,monospace;
+    --sans: 'Inter','Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    font-size:16px;
+  }
+  a{color:inherit;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  /* Top tab bar */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,21,28,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .barrow{display:flex; align-items:center; justify-content:space-between; height:56px;}
+  .logo{font-family:var(--mono); font-size:14px; color:var(--text); letter-spacing:0.2px;}
+  .logo span{color:var(--amber);}
+  nav{display:flex; gap:2px;}
+  nav a{
+    font-family:var(--mono); font-size:13px; color:var(--muted);
+    padding:8px 14px; border-bottom:2px solid transparent;
+    text-decoration:none; transition:color .15s, border-color .15s;
+  }
+  nav a:hover{color:var(--text); border-color:var(--teal);}
+
+  /* Hero */
+  .hero{padding:88px 0 64px; display:flex; gap:48px; align-items:center;}
+  .hero > div:first-child{flex:1.15;}
+  .hero > .terminal{flex:1; min-width:0;}
+  .eyebrow-file{font-family:var(--mono); font-size:13px; color:var(--teal); margin-bottom:14px;}
+  h1{font-size:2.5rem; line-height:1.18; font-weight:700; letter-spacing:-0.01em;}
+  .hero p.lede{margin-top:18px; color:var(--muted); font-size:1.05rem; max-width:46ch;}
+  .hero-links{margin-top:28px; display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; padding:10px 16px;
+    border:1px solid var(--line); text-decoration:none; color:var(--text);
+    transition:border-color .15s, color .15s;
+  }
+  .btn.primary{background:var(--amber); color:#1a1305; border-color:var(--amber); font-weight:600;}
+  .btn:hover{border-color:var(--teal); color:var(--teal);}
+  .btn.primary:hover{color:#1a1305; border-color:var(--amber); opacity:0.9;}
+
+  .terminal{
+    background:var(--panel); border:1px solid var(--line);
+  }
+  .terminal .tbar{
+    display:flex; align-items:center; gap:8px;
+    padding:9px 12px; border-bottom:1px solid var(--line);
+    font-family:var(--mono); font-size:12px; color:var(--muted);
+  }
+  .terminal .tbody{padding:18px 16px; font-family:var(--mono); font-size:13.5px;}
+  .terminal .tbody .l{margin-bottom:6px; white-space:pre-wrap;}
+  .terminal .prompt{color:var(--teal);}
+  .terminal .out{color:var(--text);}
+  .terminal .muted{color:var(--muted);}
+  .cursor{display:inline-block; width:7px; height:14px; background:var(--amber); vertical-align:-2px; animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  section{padding:58px 0; border-top:1px solid var(--line);}
+  .file-label{font-family:var(--mono); font-size:13px; color:var(--teal); margin-bottom:8px;}
+  h2{font-size:1.5rem; font-weight:700; margin-bottom:22px;}
+
+  /* About */
+  #about p{color:var(--muted); max-width:64ch; margin-bottom:14px;}
+  #about p:last-child{margin-bottom:0;}
+
+  /* Experience timeline */
+  .tl-item{
+    position:relative; padding-left:26px; padding-bottom:26px;
+    border-left:1px solid var(--line);
+  }
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:""; position:absolute; left:-4.5px; top:5px;
+    width:8px; height:8px; background:var(--amber);
+  }
+  .tl-head{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:baseline;}
+  .tl-role{font-weight:700; font-size:1.02rem;}
+  .tl-org{color:var(--teal); font-weight:400;}
+  .tl-date{font-family:var(--mono); font-size:12.5px; color:var(--muted); white-space:nowrap;}
+  .tl-desc{color:var(--muted); margin-top:8px; font-size:0.96rem; max-width:66ch;}
+
+  /* Projects */
+  .proj-grid{display:flex; gap:16px;}
+  .proj-grid .proj-card{flex:1; min-width:0;}
+  .proj-card{
+    background:var(--panel); border:1px solid var(--line);
+    padding:20px; display:flex; flex-direction:column; gap:10px;
+  }
+  .proj-tag{
+    font-family:var(--mono); font-size:11px; color:var(--amber);
+    border:1px solid var(--amber); display:inline-block; padding:2px 8px; width:fit-content;
+  }
+  .proj-card h3{font-size:1.02rem; font-weight:700;}
+  .proj-card p{color:var(--muted); font-size:0.9rem; flex-grow:1;}
+  .proj-meta{font-family:var(--mono); font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:10px;}
+
+  .proj-list{margin-top:18px;}
+  .proj-row{
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    padding:14px 0; border-top:1px solid var(--line);
+  }
+  .proj-row:last-child{border-bottom:1px solid var(--line);}
+  .proj-row .name{font-weight:600;}
+  .proj-row .stack{font-family:var(--mono); font-size:12px; color:var(--teal); margin-top:4px;}
+  .proj-row .desc{color:var(--muted); font-size:0.92rem; margin-top:4px; max-width:56ch;}
+  .proj-row .date{font-family:var(--mono); font-size:12px; color:var(--muted); white-space:nowrap;}
+
+  /* Skills */
+  .skill-block{margin-bottom:20px;}
+  .skill-block:last-child{margin-bottom:0;}
+  .skill-block .cat{font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-bottom:10px;}
+  .tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-family:var(--mono); font-size:12.5px; color:var(--text);
+    border:1px solid var(--line); padding:5px 10px; background:var(--panel);
+  }
+
+  /* Certifications */
+  .cert-grid{display:flex; flex-wrap:wrap; gap:0 24px;}
+  .cert-grid .cert-item{flex:0 0 calc(50% - 12px);}
+  .cert-item{display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px solid var(--line); font-size:0.92rem;}
+  .cert-item .issuer{color:var(--muted); font-size:0.85rem;}
+  .cert-item .yr{font-family:var(--mono); font-size:12px; color:var(--muted); white-space:nowrap;}
+
+  /* Contact / footer */
+  footer{padding:58px 0 70px; border-top:1px solid var(--line);}
+  footer h2{margin-bottom:12px;}
+  footer p{color:var(--muted); max-width:52ch; margin-bottom:22px;}
+  .contact-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .fine{margin-top:40px; font-family:var(--mono); font-size:12px; color:var(--muted);}
+
+  @media (max-width:760px){
+    .hero{flex-direction:column; padding-top:64px;}
+    .hero > div:first-child, .hero > .terminal{flex:1; width:100%;}
+    h1{font-size:2rem;}
+    .proj-grid{flex-direction:column;}
+    .cert-grid .cert-item{flex:0 0 100%;}
+    nav{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap barrow">
+    <div class="logo">mecky_alvin<span>.dev</span></div>
+    <nav>
+      <a href="#about">about.md</a>
+      <a href="#experience">experience.js</a>
+      <a href="#projects">projects/</a>
+      <a href="#skills">skills.json</a>
+      <a href="#certs">certs.log</a>
+      <a href="#contact">contact.txt</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div>
+      <div class="eyebrow-file">about.md</div>
+      <h1>Building small AI tools that solve real problems.</h1>
+      <p class="lede">Informatics Engineering student at Universitas Tarumanagara, shipping AI-powered dev tools, web apps, and machine learning experiments — one project at a time.</p>
+      <div class="hero-links">
+        <a class="btn primary" href="#projects">View projects</a>
+        <a class="btn" href="https://www.linkedin.com/in/mecky-alvin-tanuwidjaya-142691413/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="tbar">whoami.sh</div>
+      <div class="tbody">
+        <div class="l"><span class="prompt">$</span> whoami</div>
+        <div class="l out">Mecky Alvin Tanuwidjaya</div>
+        <div class="l muted">Informatics Engineering @ Untar</div>
+        <div class="l"><span class="prompt">$</span> cat focus.txt</div>
+        <div class="l out">AI/ML · Web Dev · Prompt Engineering</div>
+        <div class="l"><span class="prompt">$</span> status</div>
+        <div class="l out">open to internship & entry-level roles<span class="cursor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="file-label">about.md</div>
+    <h2>About</h2>
+    <p>I'm an Informatics Engineering student who enjoys learning and building things through technology. During my studies I've worked across web development, machine learning, and applied AI — which has sharpened both my technical skills and my ability to solve problems as part of a team.</p>
+    <p>I'm currently looking for internship or entry-level opportunities where I can gain real-world experience, keep learning, and contribute to meaningful projects — while continuing to take on new challenges that help me grow.</p>
+  </section>
+
+  <section id="experience">
+    <div class="file-label">experience.js</div>
+    <h2>Experience</h2>
+
+    <div class="tl-item">
+      <div class="tl-head">
+        <div class="tl-role">AI Trainer <span class="tl-org">— Outlier</span></div>
+        <div class="tl-date">Jun 2026 – Present · Remote</div>
+      </div>
+      <div class="tl-desc">Evaluate and refine AI model outputs against project guidelines, tracking task progress through a dashboard to prioritize and complete a continuous pipeline of reviews.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-head">
+        <div class="tl-role">AI Trainer / Programmer <span class="tl-org">— Upwork</span></div>
+        <div class="tl-date">Jun 2025 – Present · Remote</div>
+      </div>
+      <div class="tl-desc">Freelance AI, data entry, and programming work for international clients — maintaining quality and deadlines across a 1+ year engagement.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-head">
+        <div class="tl-role">Google Student Ambassador <span class="tl-org">— Google</span></div>
+        <div class="tl-date">Sep 2025 – Feb 2026 · Remote</div>
+      </div>
+      <div class="tl-desc">Introduced Google Gemini to students at Universitas Tarumanagara, and planned & hosted a live "Gemini Academy" walkthrough session covering its features and practical use cases.</div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="file-label">projects/</div>
+    <h2>Featured projects</h2>
+
+    <div class="proj-grid">
+      <div class="proj-card">
+        <span class="proj-tag">AI · CODE REVIEW</span>
+        <h3>CodeBuddy</h3>
+        <p>Automated code-analysis workflow: pastes a code snippet, an AI engine flags bugs, readability issues, and best-practice violations, then renders a dark-themed HTML report.</p>
+        <div class="proj-meta">Sep 2026 – Present</div>
+      </div>
+      <div class="proj-card">
+        <span class="proj-tag">AI · PROMPTING</span>
+        <h3>PromptCoach</h3>
+        <p>Scores a draft AI prompt for clarity (0–100), flags weaknesses like vagueness or missing constraints, and outputs a diagnostic checklist with a before/after comparison.</p>
+        <div class="proj-meta">Sep 2026 – Present</div>
+      </div>
+      <div class="proj-card">
+        <span class="proj-tag">AI · CAREER</span>
+        <h3>CareerForge</h3>
+        <p>Takes a user's skills, interests, and goals and generates 2–3 tailored career pathways, presented as comparative cards on a responsive dashboard.</p>
+        <div class="proj-meta">Aug 2026 – Present</div>
+      </div>
+    </div>
+
+    <div class="proj-list">
+      <div class="proj-row">
+        <div>
+          <div class="name">Data Sharing Security with VPN, Firewall & Python Socket</div>
+          <div class="stack">Python · Cisco · VPN · Firewall</div>
+          <div class="desc">Designed a secure network architecture, validated with a custom Python socket client/server for encrypted transfer.</div>
+        </div>
+        <div class="date">Dec 2025</div>
+      </div>
+      <div class="proj-row">
+        <div>
+          <div class="name">Mobile Transportation App</div>
+          <div class="stack">Flutter · Dart · GitHub</div>
+          <div class="desc">Team-built ride-booking mobile app; contributed to interface and app logic, with code published on GitHub.</div>
+        </div>
+        <div class="date">Oct 2025</div>
+      </div>
+      <div class="proj-row">
+        <div>
+          <div class="name">Nusantara-themed Frontend</div>
+          <div class="stack">HTML · CSS · JavaScript</div>
+          <div class="desc">Responsive web frontend on an Indonesian-archipelago theme, with search/filter and interactive event listeners.</div>
+        </div>
+        <div class="date">Oct 2025</div>
+      </div>
+      <div class="proj-row">
+        <div>
+          <div class="name">Friend Recommendation via BFS</div>
+          <div class="stack">Java · Graph Algorithms</div>
+          <div class="desc">Applied breadth-first search over a social graph to generate friendship recommendations.</div>
+        </div>
+        <div class="date">Jun 2025</div>
+      </div>
+      <div class="proj-row">
+        <div>
+          <div class="name">Ticket Booking Website</div>
+          <div class="stack">PHP · MySQL · GitHub</div>
+          <div class="desc">Full website for browsing and booking event tickets, with source on GitHub.</div>
+        </div>
+        <div class="date">Jun 2025</div>
+      </div>
+      <div class="proj-row">
+        <div>
+          <div class="name">Weather Prediction Model</div>
+          <div class="stack">Python · Random Forest</div>
+          <div class="desc">Ensemble classifier predicting weather conditions from historical data.</div>
+        </div>
+        <div class="date">Jun 2025</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="file-label">skills.json</div>
+    <h2>Skills</h2>
+
+    <div class="skill-block">
+      <div class="cat">languages</div>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">Java</span>
+        <span class="tag">C++</span><span class="tag">PHP</span><span class="tag">SQL</span><span class="tag">Dart</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="cat">web &amp; mobile</div>
+      <div class="tags">
+        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">React.js</span>
+        <span class="tag">jQuery</span><span class="tag">Laravel</span><span class="tag">Flutter</span><span class="tag">Android Studio</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="cat">ai / machine learning</div>
+      <div class="tags">
+        <span class="tag">Supervised Learning</span><span class="tag">Unsupervised Learning</span>
+        <span class="tag">Classification</span><span class="tag">Regression</span>
+        <span class="tag">Prompt Engineering</span><span class="tag">AI Agents</span><span class="tag">RAG</span>
+        <span class="tag">Microsoft Azure AI</span><span class="tag">Google Gemini</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="cat">databases</div>
+      <div class="tags">
+        <span class="tag">MySQL</span><span class="tag">MongoDB</span><span class="tag">Vector Search</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="cat">networking &amp; systems</div>
+      <div class="tags">
+        <span class="tag">VPN</span><span class="tag">Firewalls</span><span class="tag">Cisco Routers/ASA</span>
+        <span class="tag">Network Topology</span><span class="tag">Linux</span><span class="tag">Windows</span>
+        <span class="tag">VirtualBox</span><span class="tag">GNS3</span>
+      </div>
+    </div>
+    <div class="skill-block">
+      <div class="cat">tools &amp; practice</div>
+      <div class="tags">
+        <span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Data Structures</span>
+        <span class="tag">Algorithms</span><span class="tag">Project Management</span><span class="tag">Public Speaking</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="certs">
+    <div class="file-label">certs.log</div>
+    <h2>Certifications</h2>
+    <div class="cert-grid">
+      <div class="cert-item"><div><div>Belajar Machine Learning untuk Pemula</div><div class="issuer">Dicoding Indonesia</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Membangun Aplikasi Gen AI dengan Microsoft Azure</div><div class="issuer">Dicoding Indonesia</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Prompt Engineering untuk Software Developer</div><div class="issuer">Dicoding Indonesia</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Build an AI Agent</div><div class="issuer">IBM</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Building AI Agents with MongoDB</div><div class="issuer">MongoDB</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Building RAG Apps Using MongoDB</div><div class="issuer">MongoDB</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Building AI-Powered Search with MongoDB Vector Search</div><div class="issuer">MongoDB</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Gemini Certified Student</div><div class="issuer">Google</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Google Student Ambassador Certification</div><div class="issuer">Google</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Python Essentials 1</div><div class="issuer">Cisco Networking Academy</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>Python / JS / SQL / CSS (Intro–Intermediate)</div><div class="issuer">Sololearn</div></div><div class="yr">2026</div></div>
+      <div class="cert-item"><div><div>From SQL to MongoDB's Document Model</div><div class="issuer">MongoDB</div></div><div class="yr">2026</div></div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="file-label">contact.txt</div>
+    <h2>Let's work together</h2>
+    <p>Open to internship and entry-level Software Engineering / AI-ML roles. Reach out below — happy to talk about tech, collaborate on a project, or hear about an opportunity.</p>
+    <div class="contact-row">
+      <a class="btn primary" href="mailto:malvintnw21@gmail.com">mail</a>
+      <a class="btn" href="https://www.linkedin.com/in/mecky-alvin-tanuwidjaya-142691413/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/alvintnw">GitHub</a>
+    </div>
+    <div class="fine">Jakarta, Indonesia · Indonesian (native) · English (professional working proficiency)</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
